@@ -1,0 +1,35 @@
+<div class="content">
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="Absolute-Center is-Responsive">
+                    <form action="/locations" method="POST" class="form-inline" id="ip-form">
+                        <input type="text" class="col-8 form-control" id="inputIP" placeholder="Enter an IP Address"
+                            name="ip">
+                        <button type="submit" class="col-4 btn btn-dark">Get Location</button>
+                    </form>
+                    <br />
+                    <br />
+                    {{#if hasErrors}}
+                    <div class="alert alert-danger col-12" id="error-container">Error: {{error}}
+                    </div>
+                    {{/if}}
+                    {{#if location}}
+                    <div class="form-group col-12" id="result-container">
+                        <dl>
+                            <dt id="ip">IP</dt>
+                            <dd>{{location.query}}</dd>
+                            <dt id="country">country</dt>
+                            <dd>{{location.country}}</dd>
+                            <dt id="regionName">regionName</dt>
+                            <dd>{{location.regionName}}</dd>
+                            <dt id="city">city</dt>
+                            <dd>{{location.city}}</dd>
+                        </dl>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

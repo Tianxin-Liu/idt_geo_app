@@ -1,0 +1,63 @@
+<div class="content">
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="Absolute-Center is-Responsive">
+                    <form action="/query" method="POST" class="form-inline">
+                        <input type="text" class="col-8 form-control" id="inputQuery" placeholder="Enter an IP Address"
+                            name="query">
+                        <button type="submit" class="col-4 btn btn-dark">Search</button>
+                    </form>
+                    <br />
+                    <form action="/queryNo" method="POST" class="form-inline">
+                        <input type="text" class="col-8 form-control" id="QueryNo"
+                            placeholder="Enter a number to get last records" name="queryNo">
+                        <button type="submit" class="col-4 btn btn-dark">Search</button>
+                    </form>
+                    <br />
+                    <br />
+                    {{#if IPQuery}}
+                    <a type="button" class="col-12 btn btn-dark" href="/query">Show All</a>
+                    {{#if IPResult}}
+                    <strong>Searching results with ip {{IP}}</strong>
+                    {{else}}
+                    <strong>No searching result with ip {{IP}}</strong>
+                    {{/if}}
+                    {{/if}}
+                    {{#if NoQuery}}
+                    <a type="button" class="col-12 btn btn-dark" href="/query">Show All</a>
+                    <strong>Last {{No}} locations</strong>
+                    {{/if}}
+                    {{#if hasQuery}}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">IP</th>
+                                <th scope="col">Country</th>
+                                <th scope="col">Region</th>
+                                <th scope="col">City</th>
+                                <th scope="col">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each locations}}
+                            <tr>
+                                <td>{{i}}</td>
+                                <td>{{ip}}</td>
+                                <td>{{country}}</td>
+                                <td>{{region}}</td>
+                                <td>{{city}}</td>
+                                <td><a type="button" class="btn btn-dark" href="/map/{{id}}">Show in map</a></td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{else}}
+                    <p> No location history.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
