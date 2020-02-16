@@ -5,23 +5,38 @@
                 <div class="Absolute-Center is-Responsive">
                     <div class="form-group col-12" id="map-container">
                         <a type="button" class="col-12 btn btn-dark" href="/query">
-                        Back</a>
+                            Back</a>
                         <dl>
                             <dt id="ip">IP</dt>
-                            <dd id="ip_val">{{query}}</dd>
+                            <dd id="ip_val">{{loc.query}}</dd>
                             <dt id="country">country</dt>
-                            <dd>{{country}}</dd>
-                            <dt id="regionName">regionName</dt>
-                            <dd>{{regionName}}</dd>
+                            <dd>{{loc.country}}</dd>
+                            <dt id="regionName">region</dt>
+                            <dd>{{loc.regionName}}</dd>
                             <dt id="city">city</dt>
-                            <dd>{{city}}</dd>
+                            <dd>{{loc.city}}</dd>
                             <dt id="lat">latitude</dt>
-                            <dd id="lat_val">{{lat}}</dd>
+                            <dd id="lat_val">{{loc.lat}}</dd>
                             <dt id="lon">longitude </dt>
-                            <dd id="lon_val">{{lon}}</dd>
+                            <dd id="lon_val">{{loc.lon}}</dd>
                         </dl>
                     </div>
                     <div id="googleMap" style="width:500px;height:380px;"></div>
+                    <br />
+                    <form class="form-inline" method="POST" action="/sendmessage">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">+1</span>
+                        </div>
+                        <input type="text" class="col-7 form-control" id="number"
+                            placeholder="Enter number to send message" name="phone">
+                        <div style="display:none;">
+                            <input class="disabled" name="country" value="{{loc.country}}">
+                            <input name="region" value="{{loc.regionName}}">
+                            <input name="city" value="{{loc.city}}">
+                            <input name="ip" value="{{loc.query}}">
+                        </div>
+                        <button class="col-4 btn btn-dark" type="submit">Send Message</button>
+                    </form>
                 </div>
             </div>
     </main>

@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const locationsData = data.locations;
 var bodyParser = require('body-parser');
+const AWS = require('aws-sdk');
 
 function validateIP(ip) {
     var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
@@ -48,7 +49,7 @@ router.post("/locations", async (req, res) => {
             return;
         }
         let location = await locationsData.getLocationByIp(ip);
-        if(location.status == 'fail') {
+        if (location.status == 'fail') {
             res.status(401).render("geo/location",
                 {
                     error: "Can not find this ip's location",
@@ -80,7 +81,7 @@ router.get("/query", async (req, res) => {
                 hasQuery: true,
                 locations: locations.map((l) => {
                     i++;
-                    return { i: i, ip: l.query, country: l.country, region: l.regionName, city: l.city, id: l._id};
+                    return { i: i, ip: l.query, country: l.country, region: l.regionName, city: l.city, id: l._id };
                 })
             });
         return;
@@ -128,7 +129,7 @@ router.post("/query", async (req, res) => {
                 hasQuery: true,
                 locations: locations.map((l) => {
                     i++;
-                    return { i: i, ip: l.query, country: l.country, region: l.regionName, city: l.city, id: l._id};
+                    return { i: i, ip: l.query, country: l.country, region: l.regionName, city: l.city, id: l._id };
                 })
             });
         return;
@@ -173,7 +174,7 @@ router.post("/queryNo", async (req, res) => {
                 hasQuery: true,
                 locations: locations.map((l) => {
                     i++;
-                    return { i: i, ip: l.query, country: l.country, region: l.regionName, city: l.city, id: l._id};
+                    return { i: i, ip: l.query, country: l.country, region: l.regionName, city: l.city, id: l._id };
                 })
             });
         return;
@@ -186,7 +187,33 @@ router.post("/queryNo", async (req, res) => {
 
 router.get("/map/:id", async (req, res) => {
     let loc = await locationsData.get(req.params.id);
-    res.render("geo/map", loc);
+    res.render("geo/map", { loc: loc });
+});
+
+router.post("/sendmessage", (req, res) => {
+    let number = req.body.phone;
+
+    AWS.config.update({
+        accessKeyId: "AKIAITGQPWCO72EFJFMQ",
+        secretAccessKey: "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",
+        region: 'us-east-1'
+    });
+
+    const sns = new AWS.SNS();
+    const params = {
+        Message: "country: " + req.body.country
+            + "\nregion: " + req.body.region
+            + "\ncity: " + req.body.city
+            + "\nIP: " + req.body.ip,
+        PhoneNumber: '1' + number
+    }
+    sns.publish(params, function (err, data) {
+        if (err) {
+            console.log(err, err.stack);
+        } else {
+            console.log("send!");
+        }
+    })
 });
 
 const constructorMethod = app => {
